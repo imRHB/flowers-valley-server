@@ -85,6 +85,17 @@ async function run() {
             res.json(orders);
         });
 
+        // GET API : Orders Filter by User
+        app.get('/orders/:userEmail', async (req, res) => {
+            const email = req.params.userEmail;
+            const query = { userEmail: email };
+            console.log(query);
+            const cursor = ordersCollection.find(query);
+            const orders = await cursor.toArray();
+            res.json(orders);
+            console.log(orders);
+        });
+
         // DELETE API : Order
         app.delete('/orders/:bqId', async (req, res) => {
             const bqId = req.params.bqId;
