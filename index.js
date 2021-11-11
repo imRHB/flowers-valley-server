@@ -1,5 +1,6 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
 const cors = require('cors');
 require('dotenv').config();
 const app = express();
@@ -16,13 +17,17 @@ async function run() {
     try {
         await client.connect();
 
+        // Flowers Valley database
         const database = client.db('flowers-valley');
-        const bouquetsCollection = database.collection('bouquets');
+
+        // DB collections
+        const bouquetCollection = database.collection('bouquets');
         const occasionCollection = database.collection('occasion');
+        const reviewCollection = database.collection('reviews');
 
         // GET API : Rose Bouquets
         app.get('/bouquets', async (req, res) => {
-            const bouquets = await bouquetsCollection.find({}).toArray();
+            const bouquets = await bouquetCollection.find({}).toArray();
             res.json(bouquets);
         });
 
@@ -31,6 +36,41 @@ async function run() {
             const occasion = await occasionCollection.find({}).toArray();
             res.json(occasion);
         });
+
+        // GET API : Single Bouquet
+        app.get('/bouquets/:bqId', async (req, res) => {
+            const id = req.params.bqId;
+            const query = { _id: ObjectId(id) };
+            const result = await bouquetCollection.findOne(query);
+            res.json(result);
+        });
+
+        // GET API : Reviews
+        app.get('/reviews', async (req, res) => {
+            const reviews = await reviewCollection.find({}).toArray();
+            res.json(reviews);
+        });
+
+        // POST API : Add Bouquet
+        app.post('/add-product', async (req, res) => {
+            const newBouquet = req.body;
+            bouquetCollection.insertOne(newBouquet)
+                .then(result => {
+                    res.json(result);
+                })
+        });
+
+        // POST API : Add Review
+        app.post('/add-review', async (req, res) => {
+            const newReview = req.body;
+            reviewCollection.insertOne(newReview)
+                .then(result => {
+                    res.json(result);
+                })
+        });
+
+        // POST API : Bouquet Order
+
     }
 
     finally {
