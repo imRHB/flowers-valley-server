@@ -24,6 +24,7 @@ async function run() {
         const bouquetCollection = database.collection('bouquets');
         const occasionCollection = database.collection('occasion');
         const reviewCollection = database.collection('reviews');
+        const ordersCollection = database.collection('orders');
 
         // GET API : Rose Bouquets
         app.get('/bouquets', async (req, res) => {
@@ -70,7 +71,19 @@ async function run() {
         });
 
         // POST API : Bouquet Order
+        app.post('/orders', async (req, res) => {
+            const orderedBouquet = req.body;
+            ordersCollection.insertOne(orderedBouquet)
+                .then(result => {
+                    res.json(result);
+                })
+        });
 
+        // GET API : Orders
+        app.get('/orders', async (req, res) => {
+            const orders = await ordersCollection.find({}).toArray();
+            res.json(orders);
+        });
     }
 
     finally {
