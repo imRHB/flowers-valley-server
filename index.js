@@ -90,11 +90,9 @@ async function run() {
         app.get('/orders/:userEmail', async (req, res) => {
             const email = req.params.userEmail;
             const query = { userEmail: email };
-            console.log(query);
             const cursor = ordersCollection.find(query);
             const orders = await cursor.toArray();
             res.json(orders);
-            console.log(orders);
         });
 
         // DELETE API : Order
@@ -103,7 +101,6 @@ async function run() {
             const query = { _id: bqId };
             const result = await ordersCollection.deleteOne(query);
             res.json(result);
-            console.log(result);
         });
 
         // POST API : Users
