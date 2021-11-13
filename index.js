@@ -110,6 +110,18 @@ async function run() {
             const result = await usersCollection.insertOne(user);
             res.json(result);
         });
+
+        // PUT API : Admin Role
+        app.put('/users/admin', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const updateUser = {
+                $set: { role: 'admin' }
+            };
+            const result = await usersCollection.updateOne(filter, updateUser);
+            res.json(result);
+        });
+
     }
 
     finally {
