@@ -77,7 +77,6 @@ async function run() {
             ordersCollection.insertOne(orderedBouquet)
                 .then(result => {
                     res.json(result);
-                    console.log(result);
                 })
         });
 
@@ -119,6 +118,38 @@ async function run() {
                 $set: { role: 'admin' }
             };
             const result = await usersCollection.updateOne(filter, updateUser);
+            res.json(result);
+        });
+
+        // PUT API : Order Status
+        app.put('/orders/:bqId', async (req, res) => {
+            const filter = { _id: ObjectId(req.params.bqId) };
+            const result = await ordersCollection.updateOne(filter, {
+                $set: {
+                    status: req.body.status,
+                },
+            });
+            console.log(result);
+        });
+
+        // GET API : Check admin role
+        app.get('/users/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const user = await usersCollection.findOne(query);
+            let isAdmin = false;
+            if (user?.role === 'admin') {
+                isAdmin = true;
+            }
+            res.json({ admin: isAdmin });
+        });
+
+        // DELETE API : Product
+        app.delete('/bouquets/:bqId', async (req, res) => {
+            const bqId = req.params.bqId;
+            console.log(bqId);
+            const quary = { _id: ObjectId(bqId) };
+            const result = await bouquetCollection.deleteOne(quary);
             res.json(result);
         });
 
