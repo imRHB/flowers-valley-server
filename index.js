@@ -77,6 +77,7 @@ async function run() {
             ordersCollection.insertOne(orderedBouquet)
                 .then(result => {
                     res.json(result);
+                    console.log(result);
                 })
         });
 
@@ -87,9 +88,9 @@ async function run() {
         });
 
         // GET API : Orders Filter by User
-        app.get('/orders/:userEmail', async (req, res) => {
-            const email = req.params.userEmail;
-            const query = { userEmail: email };
+        app.get('/orders/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
             const cursor = ordersCollection.find(query);
             const orders = await cursor.toArray();
             res.json(orders);
