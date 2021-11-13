@@ -126,10 +126,10 @@ async function run() {
             const filter = { _id: ObjectId(req.params.bqId) };
             const result = await ordersCollection.updateOne(filter, {
                 $set: {
-                    status: req.body.status,
+                    status: req.body,
                 },
             });
-            console.log(result);
+            res.send(result);
         });
 
         // GET API : Check admin role
@@ -147,7 +147,6 @@ async function run() {
         // DELETE API : Product
         app.delete('/bouquets/:bqId', async (req, res) => {
             const bqId = req.params.bqId;
-            console.log(bqId);
             const quary = { _id: ObjectId(bqId) };
             const result = await bouquetCollection.deleteOne(quary);
             res.json(result);
