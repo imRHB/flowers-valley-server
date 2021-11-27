@@ -4,7 +4,7 @@ Flower is the sign of love and peace. Over the whole world `Rose` has a differen
 
 ## Project Overview and Client Side
 
-[GitHub (Flowers Valley Client Side)](https://github.com/programming-hero-web-course-4/niche-website-client-side-imprantu)
+[GitHub (Flowers Valley Client Side)](https://github.com/imRHB/flowers-valley-client)
 
 #### Server
 
